@@ -1,3 +1,7 @@
+body {
+    font-family: 'Source Sans Pro', sans-serif !important;
+}
+
 .writango-header {
     background: #fff !important;
 }
@@ -8,7 +12,7 @@
     display: inline;
     font-weight: bolder;
     font-size: 35px;
-    color: #096dd9;
+    /* color: #096dd9; */
 }
 
 .writango-menu-container {
@@ -22,4 +26,12 @@
     /* background: #efefef; */
     padding: 50px;
     font-size: 30px;
+}
+
+.landing-block h3 {
+    color: #096dd9;
+}
+
+.font-color-blue {
+    color: #096dd9
 }
