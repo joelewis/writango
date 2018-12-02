@@ -7,7 +7,8 @@ from django.template.defaultfilters import slugify
 
 # Create your models here.
 class Post(models.Model):
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, null=True, blank=True)
+    session = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
     text = models.TextField(blank=True, null=True)
     slug = models.SlugField(max_length=255)

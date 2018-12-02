@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Layout, Menu, Breadcrumb } from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, Dropdown } from 'antd';
 import { Row, Col } from 'antd';
 const { Header, Footer, Sider, Content } = Layout;
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
@@ -12,12 +12,37 @@ var DraftList = () => <div> draft list </div>
 var PostView = () => <div> post view </div>
 var PostEdit = () => <div> post edit </div>
 
+
+const AnonymousMenu = (
+    <Menu>
+      <Menu.Item key="0">
+        <a href="/register">Sign-up</a>
+      </Menu.Item>
+      <Menu.Item key="1">
+        <a href="/login">Login</a>
+      </Menu.Item>
+    </Menu>
+);
+
+const UserMenu = (
+    <Menu>
+      <Menu.Item key="0">
+        <a href="/logout">Logout</a>
+      </Menu.Item>
+    </Menu>
+);
+
 class Index extends Component{
     render(){
       return(
         <Layout className="layout">
             <Header className="writango-header">
             <div className="writango-logo"><Link style={{ textDecoration: 'none',  color: '#555'}} to="/"> <span className="font-color-blue">W</span>RITANG<span className="font-color-blue">O</span></Link></div>
+            <Dropdown overlay={Model.session.user.anonymous ? AnonymousMenu : UserMenu} trigger={['click']}>
+                <a style={{float: "right"}} className="ant-dropdown-link" href="#">
+                    {Model.session.user.anonymous ? "Hello, Mr. Anonymous!" : Model.session.user.email} <Icon type="down" />
+                </a>
+            </Dropdown>
             <Menu
                 // theme="dark"
                 mode="horizontal"
@@ -27,7 +52,7 @@ class Index extends Component{
             >
                 <Menu.Item key="1"><Link to={"/writes/posts"}>Posts</Link></Menu.Item>
                 <Menu.Item key="2">Drafts</Menu.Item>
-                <Menu.Item key="3">Editor</Menu.Item>
+                <Menu.Item key="3">Write</Menu.Item>
                 {/* <Menu.Item key="3">nav 3</Menu.Item> */}
             </Menu>
             </Header>
