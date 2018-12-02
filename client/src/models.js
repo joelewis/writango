@@ -3,7 +3,7 @@ import $ from 'jquery';
 var session = {};
 
 var loadSession = function() {
-    return $.Deferred().resolve;
+    return $.Deferred().resolve();
 }
 
 export default {

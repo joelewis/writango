@@ -1,15 +1,20 @@
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import AppRouter from "./routes.js";
+import Index from "./components/Index.js";
 import Model from "./models.js";
 import 'antd/dist/antd.css';
-
+import { BrowserRouter as Router } from "react-router-dom";
 
 // get session details.
 // if user logged in 
 
 
 Model.loadSession().then((session) => {
-  ReactDOM.render(<AppRouter />, document.getElementById("root"));
+  ReactDOM.render(
+    <Router>
+      <Index />
+    </Router>, 
+    document.getElementById("root"));
 });
 
