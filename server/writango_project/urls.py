@@ -24,8 +24,11 @@ from django.views.static import serve
 # print static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^session/get$', writango_views.get_session),
     url(r'^static/(?P<path>.*)$', writango_views.serve_static),
-    url(r'^(?P<path>.*)$', writango_views.serve_static),
+    url(r'^writes/.+$', writango_views.index),
+    url(r'^$', writango_views.index),
+
     # url(r'^writes/@(?P<username>.+)'),
     # url(r'^writes/@(?P<username>.+)/drafts$'),
     # url(r'^writes/@(?P<username>.+)/edit/(?P<post>.+)$'),
