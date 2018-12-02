@@ -1,0 +1,50 @@
+# IDEs
+.project
+.pydevproject
+.idea
+.vscode
+.settings
+
+# Random files
+*~
+\#*
+
+virtualenv/
+htmlcov/
+src/static_dist/
+src/static_root/
+
+# Python compiled byte code
+*.pyc
+settings.py
+*/settings.py
+
+# virtual env
+venv
+venv/*
+
+# SQLite3 database
+*.sqlite
+*.sqlite3
+
+# Node modules
+node_modules/
+yarn.lock
+npm-debug.log
+
+# Coverage 
+coverage/
+.coverage
+.cache
+
+# static validation files
+.eslintrc
+.sass-lint.yml
+.prospector.yml
+.coveragerc
+
+# in case we run shippable tests don't include it
+shippable/
+
+# not include scripts because they come from external module
+scripts/
