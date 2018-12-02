@@ -1,0 +1,25 @@
+.writango-header {
+    background: #fff !important;
+}
+
+.writango-logo {
+    float: left;
+    width: 300px;
+    display: inline;
+    font-weight: bolder;
+    font-size: 35px;
+    color: #096dd9;
+}
+
+.writango-menu-container {
+    font-size: 25px !important;
+}
+
+.landing-block {
+    height: 400px;
+    width: 60%;
+    margin: 50px;
+    /* background: #efefef; */
+    padding: 50px;
+    font-size: 30px;
+}
