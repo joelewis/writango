@@ -1,17 +1,36 @@
 import $ from 'jquery';
+/**
+ * Client DB
+ * Holds the information necessary for components
+ * TODO: Use a proper state management library
+ */
+var model = {
+    session: {},
+    posts: [],
+    drafts: [],
+    currentDoc: {}
+};
 
-var session = {};
-
-var loadSession = function() {
+model.loadSession = function() {
     return $.get('/session/get').done((resp) => {
-        session.session_key = resp.session_key;
-        session.user = resp.user;
+        model.session.session_key = resp.session_key;
+        model.session.user = resp.user;
     })
 }
 
-window.session = session;
-
-export default {
-    session,
-    loadSession
+model.loadPosts = function(userkey) {
+    return $.get('/posts/@'+userkey).done(resp => {
+        model.posts = resp.posts;
+    })
 };
+
+
+model.loadDrafts = function() {
+    return $.get('/drafts').done(resp => {
+        model.drafts = resp.drafts;
+    })
+};
+
+window.model = model;
+
+export default model;

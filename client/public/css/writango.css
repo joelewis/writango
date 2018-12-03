@@ -16,7 +16,7 @@ body {
 }
 
 .writango-menu-container {
-    font-size: 25px !important;
+    /* font-size: 16px ; */
 }
 
 .landing-block {
@@ -35,3 +35,22 @@ body {
 .font-color-blue {
     color: #096dd9
 }
+
+/* .ant-menu-item-selected {
+    border-bottom: 2px solid transparent !important;
+    color: rgba(0, 0, 0, 0.65) !important;
+}
+.ant-menu-item-selected a {
+    border-bottom: 2px solid transparent !important;
+    color: rgba(0, 0, 0, 0.65) !important;
+}
+
+.ant-menu-item-custom-selected {
+    border-bottom: 2px solid ##1890ff !important;
+    color: #1890ff !important;
+}
+
+.ant-menu-item-custom-selected a {
+    border-bottom: 2px solid ##1890ff !important;
+    color: #1890ff !important;
+} */
