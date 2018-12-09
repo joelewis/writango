@@ -103,5 +103,6 @@ var Editor = {
 }
 
 export {
-    Editor
+    Editor,
+    newPostJSON
 }

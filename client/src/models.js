@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import {newPostJSON} from './editor';
 /**
  * Client DB
  * Holds the information necessary for components
@@ -32,6 +33,7 @@ model.loadPost = function(userkey, slug) {
 
 model.editDraft = function(userkey, slug, postJSON) {
     // postJSON.fields.text = postJSON.fields.text ? JSON.stringify(postJSON.fields.text) : postJSON.fields.text;
+    postJSON.fields.text = postJSON.fields.text || newPostJSON();
     return $.ajax({
         url: '/drafts/'+userkey+'/edit/'+slug, 
         method: 'POST',
