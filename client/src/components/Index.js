@@ -5,16 +5,14 @@ const { Header, Footer, Sider, Content } = Layout;
 import { BrowserRouter as Router, Route, Link, NavLink } from "react-router-dom";
 import Landing from './Landing.js'
 import PostList from './PostList.js'
+import PostEdit from './PostEdit.js'
+import PostView from './PostView.js'
+import DraftList from './DraftList.js'
 import HomeMenu from './HomeMenu.js'
 import Model from '../models'
 import {createBrowserHistory} from 'history';
 import $ from 'jquery';
 
-
-// var PostList = () => <div> post list </div>
-var DraftList = () => <div> draft list </div>
-var PostView = () => <div> post view </div>
-var PostEdit = () => <div> post edit </div>
 
 
 const AnonymousMenu = (
@@ -64,14 +62,14 @@ class Index extends Component{
         <Layout className="layout">
             <Header className="writango-header">
             <div onClick={() => { $(window).trigger('RefreshMenu') }} className="writango-logo"><Link style={{ textDecoration: 'none',  color: '#555'}} to="/"> <span className="font-color-blue">W</span>RITANG<span className="font-color-blue">O</span></Link></div>
-            <Dropdown overlay={Model.session.user.anonymous ? AnonymousMenu : UserMenu} trigger={['click']}>
+            <Dropdown  className="writango-menu-container" overlay={Model.session.user.anonymous ? AnonymousMenu : UserMenu} trigger={['click']}>
                 <a style={{float: "right"}} className="ant-dropdown-link" href="#">
                     {Model.session.user.anonymous ? "Hello, Mr. Anonymous!" : Model.session.user.email} <Icon type="down" />
                 </a>
             </Dropdown>
             <HomeMenu selectedKey={this.state.selectedKey} onSelect={this.onSelect.bind(this)}/>
             </Header>
-            <Content style={{ padding: '50px 50px', background: '#fff' }}>
+            <Content style={{ padding: '20px 20px', background: '#fff', width: '60%', margin: 'auto', marginTop: '20px' }}>
                     <div>
                     <Route path="/" exact component={Landing} />
                     <Route path="/writes/:username" exact component={PostList} />

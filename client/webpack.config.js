@@ -15,10 +15,27 @@ module.exports = {
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"]
+      },
+      {
+        test: /\.less$/,
+        use: [{
+          loader: 'style-loader',
+        }, {
+          loader: 'css-loader', // translates CSS into CommonJS
+        }, {
+          loader: 'less-loader', // compiles Less to CSS
+          options: { 
+            modifyVars: {
+              '@font-family': "'Merriweather', 'Georgia', serif",
+              '@layout-body-background': '#fff',
+            },
+            javascriptEnabled: true 
+          }
+        }]
       }
     ]
   },
-  resolve: { extensions: ["*", ".js", ".jsx"] },
+  resolve: { extensions: ["*", ".js", ".jsx", ".less"] },
   output: {
     path: path.resolve(__dirname, "public/js/"),
     // publicPath: "/dist/",
