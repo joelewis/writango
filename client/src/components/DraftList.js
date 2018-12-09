@@ -30,6 +30,14 @@ class DraftList extends Component {
         })
     }
 
+    deletePost(post) {
+        Model.deletePost(post.fields.slug)
+        var posts = this.state.posts.filter(p => {
+            return p.fields.slug != post.fields.slug
+        })
+        this.setState({posts: posts})
+    }
+
     render() {
         return (
             <Card style={{minHeight: '100vh', border: '0'}}>
@@ -46,7 +54,11 @@ class DraftList extends Component {
                         dataSource={this.state.posts}
                         renderItem={item => (
                         <List.Item
-                            actions={[<Link to={item.editurl}>Edit</Link>, <Link to={item.viewurl}>View</Link>]}
+                            actions={[
+                                <Link to={item.editurl}>Edit</Link>, 
+                                <Link to={item.viewurl}>View</Link>,
+                                <a onClick={() => {this.deletePost(item)}}>Delete</a>
+                            ]}
                             >
                             <List.Item.Meta
                             avatar={<Avatar>{item.fields.title[0]}</Avatar>}
