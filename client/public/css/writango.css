@@ -1,5 +1,7 @@
 body {
-    font-family: 'Source Sans Pro', sans-serif !important;
+    /* font-family: 'Source Sans Pro', sans-serif !important; */
+    /* font-family: 'Merriweather', 'Georgia', serif !important; */
+
 }
 
 .writango-header {
@@ -12,11 +14,13 @@ body {
     display: inline;
     font-weight: bolder;
     font-size: 35px;
+    font-family: 'Source Sans Pro', sans-serif !important;
     /* color: #096dd9; */
 }
 
 .writango-menu-container {
     /* font-size: 16px ; */
+    font-family: 'Source Sans Pro', sans-serif !important;
 }
 
 .landing-block {
@@ -25,7 +29,8 @@ body {
     margin: 50px;
     /* background: #efefef; */
     padding: 50px;
-    font-size: 30px;
+    font-size: 24px;
+    font-family: 'Source Sans Pro', sans-serif !important;
 }
 
 .landing-block h3 {

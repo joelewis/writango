@@ -32,6 +32,18 @@ class HomeMenu extends Component {
         this.setState({selectedKeys: [item.key]})
     }
 
+    createDraft() {
+        Model.createDraft().then((resp) => {
+            var post = resp;
+            if (post.fields.user) {
+                var edit_url = "/writes/@"+post.fields.user.username + "/edit/" + self.fields.slug;
+            } else {
+                var edit_url = "/writes/@" + post.fields.session + "/edit/" + post.fields.slug;
+            }
+            window.location.href = edit_url;
+        })
+    }
+
     render() {
         return (<Menu
             // theme="dark"
@@ -39,12 +51,12 @@ class HomeMenu extends Component {
             defaultSelectedKeys={[]}
             selectedKeys={this.state.selectedKeys}
             style={{ lineHeight: '64px' }}
-            className="writango-menu-container"
+            className="writango-menu-container" 
             onSelect={this.onSelect.bind(this)}
         >
-            <Menu.Item key="posts" ><Link to={"/writes/"+Model.session.user.id}>Posts</Link></Menu.Item>
-            <Menu.Item key="drafts">Drafts</Menu.Item>
-            <Menu.Item key="write">Write</Menu.Item>
+            <Menu.Item key="posts" ><Link to={"/writes/@"+Model.session.user.id}>Posts</Link></Menu.Item>
+            <Menu.Item key="drafts"><Link to={"/writes/@"+Model.session.user.id+"/drafts"}>Drafts</Link></Menu.Item>
+            <Menu.Item key="write" onClick={this.createDraft.bind(this)}>Write</Menu.Item>
             {/* <Menu.Item key="3">nav 3</Menu.Item> */}
         </Menu>
         )

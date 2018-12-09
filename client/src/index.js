@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import AppRouter from "./routes.js";
 import Index from "./components/Index.js";
 import Model from "./models.js";
-import 'antd/dist/antd.css';
+import 'antd/dist/antd.less';
 import { BrowserRouter as Router } from "react-router-dom";
 
 // get session details.
