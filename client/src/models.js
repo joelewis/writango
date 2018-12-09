@@ -52,6 +52,12 @@ model.createDraft = function() {
     return $.get('/create/draft');
 };
 
+model.deletePost = function(slug) {
+    return $.get('/posts/'+slug+'/delete').done(resp => {
+        console.log(resp);
+    })
+}
+
 
 
 window.model = model;
