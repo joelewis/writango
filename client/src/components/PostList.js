@@ -90,7 +90,7 @@ class DraftList extends Component {
                             >
                             <List.Item.Meta
                             avatar={<Avatar>{item.fields.title[0]}</Avatar>}
-                                title={<Link to={item.editurl}>{item.fields.title}</Link>}
+                                title={<Link to={item.playurl}>{item.fields.title}</Link>}
                                 description={new Date(item.fields.created_date).toDateString()}
                             />
                         </List.Item>
