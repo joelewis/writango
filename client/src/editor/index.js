@@ -5,6 +5,7 @@ import {addListNodes} from "prosemirror-schema-list"
 import {exampleSetup} from "prosemirror-example-setup"
 import schema from "./schema.js"
 import {getPlugins} from "./setup.js"
+import {PostPlayer, getEmptyDocJSON} from "./PostPlayer.js"
 
 
 
@@ -21,7 +22,7 @@ var newTitleJSON = () => {
 
 var getDocFromPost = function(post) {
     if (post.fields.text) {
-        return JSON.parse(post.fields.text);
+        return post.fields.text;
     } else {
         return newPostJSON();
     }
@@ -35,17 +36,20 @@ var getTitleFromPost = function(post) {
     return titleJSON;
 }
 
+
 var Editor = {
     init: function(div, opts) {
         var plugins = getPlugins({
-            schema: schema
+            schema: schema,
+            ...opts
         });
 
         var stateConfig = {
-            doc: Node.fromJSON(schema, getDocFromPost(opts.post)),
             schema: schema,
             plugins: plugins
         }
+
+        stateConfig.doc = opts.empty ? Node.fromJSON(schema, getEmptyDocJSON()) : Node.fromJSON(schema, getDocFromPost(opts.post))
 
         var viewConfig =  {
             state: EditorState.create(stateConfig),
@@ -54,6 +58,13 @@ var Editor = {
             },
             editable: () => {
                 return opts.editable;
+            },
+            createSelectionBetween: function(view, from, to) {
+                if (from != to) {
+                    opts.onSelect && opts.onSelect();
+                } else {
+                    opts.onDeselect && opts.onDeselect();
+                }
             }
         }
 
@@ -62,6 +73,16 @@ var Editor = {
                 view.updateState(view.state.apply(transaction))
                 opts.onChange(view.state.doc.toJSON())               
             }
+        }
+
+        if (opts.scrollMargin) {
+            viewConfig.scrollMargin = {bottom: 400};
+        }
+        if (opts.scrollThreshold) {
+            viewConfig.scrollThreshold = {bottom: 600};
+        }
+        if (opts.handleScrollToSelection) {
+            viewConfig.handleScrollToSelection = opts.handleScrollToSelection; 
         }
 
         let view = new EditorView(div, viewConfig);   
@@ -104,5 +125,7 @@ var Editor = {
 
 export {
     Editor,
-    newPostJSON
+    newPostJSON,
+    PostPlayer,
+    getEmptyDocJSON
 }

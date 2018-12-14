@@ -156,7 +156,8 @@
     display: block;
   }
   
-  .ProseMirror-menubar {
+  /* .ProseMirror-menubar {
+    font-size: 24px;
     border-top-left-radius: inherit;
     border-top-right-radius: inherit;
     position: relative;
@@ -170,6 +171,26 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box;
     overflow: visible;
+  } */
+
+  .ProseMirror-menubar {
+    font-size: 24px;
+    position: relative;
+    min-height: 1em;
+    color: #666;
+    padding: 1px 6px;
+    /* top: 200;
+    right: 30; */
+    /* border-bottom: 1px solid silver; */
+    z-index: 10;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    overflow: visible;
+    /* position: fixed; */
+    border: 2px solid #096dd9;
+    border-radius: 3px;
+    background: rgba(228, 235, 241, 0.9);
+    margin-bottom: 10px;
   }
   
   .ProseMirror-icon {
@@ -325,7 +346,7 @@
     /* line-height: 1.2; */
     color: #000;
     outline: none;
-    font-size: 16px;
+    font-size: 24px;
   }
   
   .writango-title {
@@ -333,8 +354,12 @@
     /* line-height: 1.2; */
     color: #000;
     outline: none;
-    font-size: 24px;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #aaa;
   }
 
   .ProseMirror p { margin-bottom: 1em }
+  
   

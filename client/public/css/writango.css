@@ -41,21 +41,53 @@ body {
     color: #096dd9
 }
 
-/* .ant-menu-item-selected {
-    border-bottom: 2px solid transparent !important;
-    color: rgba(0, 0, 0, 0.65) !important;
-}
-.ant-menu-item-selected a {
-    border-bottom: 2px solid transparent !important;
-    color: rgba(0, 0, 0, 0.65) !important;
+.writango-controls {
+    position: fixed;
+    right: 100;
+    bottom: 100;
 }
 
-.ant-menu-item-custom-selected {
-    border-bottom: 2px solid ##1890ff !important;
-    color: #1890ff !important;
+.writango-control-btn {
+    margin-left: 20px;
+    font-size: 30px;
+    cursor: pointer;
+    color: #999;
 }
 
-.ant-menu-item-custom-selected a {
-    border-bottom: 2px solid ##1890ff !important;
-    color: #1890ff !important;
+.writango-control-btn:hover {
+    /* font-size: 40px; */
+    cursor: pointer;
+    color: #096dd9
+}
+
+.writango-control-btn-selected {
+    /* font-size: 40px; */
+    cursor: pointer;
+    color: #096dd9
+
+}
+
+
+.writango-prosemirror-menubar-container {
+    margin-top: -62px;
+    position: fixed;
+    z-index: 10;
+}
+
+.width-100 {
+    width: 100%;
+    margin: auto;
+}
+
+.width-60 {
+    width: 60%;
+    margin: auto;
+}
+
+.ant-card-head {
+    border: 0 !important;
+}
+/* .writango-post-container {
+    border: 0 !important; 
+    margin: 'auto' !important;
 } */

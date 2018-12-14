@@ -19,14 +19,17 @@ model.loadSession = function() {
     });
 }
 
-model.loadPosts = function(userkey) {
-    return $.get('/posts/'+userkey).done(resp => {
+model.loadPosts = function(userkey, page) {
+    return $.get('/posts/'+userkey+'?page='+page).done(resp => {
         model.posts = resp.posts;
     });
 };
 
 model.loadPost = function(userkey, slug) {
     return $.get('/posts/'+userkey+'/'+slug).done(resp => {
+        if (resp && resp.fields && resp.fields.text) {
+            resp.fields.text = JSON.parse(resp.fields.text);
+        }
         model.currentDoc = resp;
     });
 };
@@ -44,9 +47,10 @@ model.editDraft = function(userkey, slug, postJSON) {
 
 };
 
-model.loadDrafts = function(userkey) {
-    return $.get('/drafts/'+userkey).done(resp => {
+model.loadDrafts = function(userkey, page) {
+    return $.get('/drafts/'+userkey+'?page='+page).done(resp => {
         model.drafts = resp.posts;
+        return resp;
     });
 };
 
@@ -54,8 +58,14 @@ model.createDraft = function() {
     return $.get('/create/draft');
 };
 
-model.deletePost = function(slug) {
-    return $.get('/posts/'+slug+'/delete').done(resp => {
+model.deletePost = function(id) {
+    return $.get('/posts/'+id+'/delete').done(resp => {
+        console.log(resp);
+    })
+}
+
+model.publishDraft = function(id) {
+    return $.get('/drafts/'+id+'/publish').done(resp => {
         console.log(resp);
     })
 }

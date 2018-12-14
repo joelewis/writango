@@ -25,7 +25,6 @@ class HomeMenu extends Component {
     }
 
     componentWillUnmount() {
-        this.unlisten();
     }
 
     onSelect(item) {

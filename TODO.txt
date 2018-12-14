@@ -1,0 +1,12 @@
+1. [done] Pagination of lists (Posts, Drafts). 
+2. API urls should be proper REST compliant or at the least not as ugly as of now.
+3. Screenshots & Gifs
+4. Proper state management library for saner client data management.
+5. [done] Rate throttling and draft limits for unregistered users.
+6. Separate models for Draft & Post. Right now it's just one big table for both drafts and posts. 
+7. [done] More formatting options like codeblocks, images, etc. 
+8. [done] Rich text editing toolbar should be customized. 
+9. Register / Login flow APIs & Pages.
+10. Encrypt/decrpyt sessions in URL.
+11. Publish action on draft page
+

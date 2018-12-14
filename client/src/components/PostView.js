@@ -14,18 +14,6 @@ class PostView extends Component {
         this.titleEditorDiv = React.createRef();
     }
 
-    debounce(func, wait) {
-        var timeout;
-        var self = this;
-        return function() {
-            clearTimeout(timeout);
-            const args = arguments;
-            timeout = setTimeout(() => {
-                func.apply(self, args);
-            }, wait);
-        };
-    }
-
     componentWillMount() {
         var self = this;
         Model.loadPost(this.props.match.params.username, this.props.match.params.postslug).then(() => {
@@ -46,7 +34,7 @@ class PostView extends Component {
     render() {
         if (this.state.post.fields) {
             return (
-                <Card style={{minHeight: '100vh', border: '0', width: '600px', margin: 'auto'}}>
+                <Card className="writango-post-container" style={{minHeight: '100vh', border: '0', width: '800px', margin: 'auto'}}>
                 <div className="prosemirror-title-div" ref={this.titleEditorDiv}>
                 </div>
                 {/* <h1>{this.state.post.fields.title}</h1> */}

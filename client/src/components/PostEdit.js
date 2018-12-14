@@ -1,17 +1,22 @@
 import React, {Component} from "react";
 import Model from "../models.js"
-import { List, Card, Icon, Divider } from "antd";
+import { Card, Button } from "antd";
 import { Editor } from '../editor'
+import $ from 'jquery';
+
+
 class PostView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            post: {}
+            post: {},
+            selectionActive: false
         }
 
         // create ref for prosemirror div
         this.editorDiv = React.createRef();
         this.titleEditorDiv = React.createRef();
+        this.menubarDiv = React.createRef();
     }
 
     debounce(func, wait) {
@@ -58,30 +63,75 @@ class PostView extends Component {
             window.editor = Editor.init(editorDiv, {
                 onChange: this.debounce(this.onPostChange.bind(this), 1000),
                 post: this.state.post,
-                editable: true
+                editable: true,
+                menubar: true,
+                onSelect: this.onSelect.bind(this),
+                onDeselect: this.onDeselect.bind(this)
             })
             window.titleEditor = Editor.initTitleEditor(titleEditorDiv, {
                 onChange: this.debounce(this.onTitleChange.bind(this), 1000),
                 post: this.state.post,
                 editable: true
             })
+            this.repositionMenubar()    
         })
     }
 
-    componentDidMount() {
-        
+    repositionMenubar() {
+        console.log(this.menubarDiv.current)
+        var $menubar = $('.ProseMirror-menubar');
+        $menubar.detach().appendTo(this.menubarDiv.current);
+    }
+
+    onSelect() {
+        this.setState({selectionActive: true});
+    }
+
+    onDeselect() {
+        this.setState({selectionActive: false});
+    }
+
+    publish() {
+        Model.publishDraft(this.state.post.pk).then(resp => {
+            console.log(resp);  
+        })
+    }
+
+    play() {
+
+    }
+
+    view() {
+
+    }
+
+    delete() {
+
     }
 
     render() {
         if (this.state.post.fields) {
             return (
-                <Card style={{minHeight: '100vh', border: '0', width: '600px', margin: 'auto'}}>
-                <div className="prosemirror-title-div" ref={this.titleEditorDiv}>
-                </div>
-                <div className="post-body">
-                    <div className="prosemirror-div" ref={this.editorDiv}>
+                <Card 
+                    className="writango-post-container" 
+                    style={{minHeight: '100vh', border: '0', width: '800px', margin: 'auto'}}
+                    extra={
+                        <Button.Group>
+                            <Button type="primary" onClick={this.publish.bind(this)}>Publish</Button>
+                            <Button>Play</Button>
+                            <Button>View</Button>
+                            <Button type="danger">Delete</Button>
+                        </Button.Group>
+                        }
+                >
+                    <div style={{visibility: this.state.selectionActive ? 'visible' : 'hidden' }} className="writango-prosemirror-menubar-container" ref={this.menubarDiv}>
                     </div>
-                </div>
+                    <div className="prosemirror-title-div" ref={this.titleEditorDiv}>
+                    </div>
+                    <div className="post-body">
+                        <div className="prosemirror-div" ref={this.editorDiv}>
+                        </div>
+                    </div>
                 </Card>
             )
         }

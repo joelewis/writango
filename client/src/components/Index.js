@@ -7,6 +7,7 @@ import Landing from './Landing.js'
 import PostList from './PostList.js'
 import PostEdit from './PostEdit.js'
 import PostView from './PostView.js'
+import PostPlay from './PostPlay.js'
 import DraftList from './DraftList.js'
 import HomeMenu from './HomeMenu.js'
 import Model from '../models'
@@ -69,13 +70,14 @@ class Index extends Component{
             </Dropdown>
             <HomeMenu selectedKey={this.state.selectedKey} onSelect={this.onSelect.bind(this)}/>
             </Header>
-            <Content style={{ padding: '20px 20px', background: '#fff', width: '60%', margin: 'auto', marginTop: '20px' }}>
+            <Content className="width-100" style={{ padding: '20px 20px', background: '#fff', margin: 'auto', marginTop: '20px' }}>
                     <div>
                     <Route path="/" exact component={Landing} />
                     <Route path="/writes/:username" exact component={PostList} />
                     <Route path="/writes/:username/drafts" exact component={DraftList} />
                     <Route path="/writes/:username/posts/:postslug" exact component={PostView} />
                     <Route path="/writes/:username/edit/:postslug" exact component={PostEdit} />
+                    <Route path="/writes/:username/play/:postslug" exact component={PostPlay} />
                     </div>
             </Content>
             <Footer style={{ textAlign: 'center' }}>
