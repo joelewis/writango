@@ -1,17 +1,4 @@
 """writango_project URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/1.11/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  url(r'^$', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  url(r'^$', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.conf.urls import url, include
-    2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
 from django.contrib import admin
@@ -25,6 +12,15 @@ from django.views.static import serve
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^session/get$', writango_views.get_session),
+    url(r'^create/draft$', writango_views.create_draft), # TODO: GET URL UGLY. MAKE IT POST.
+    url(r'^posts/$', writango_views.get_posts),
+    url(r'^drafts$', writango_views.get_drafts),
+    url(r'^posts/@(?P<username>.+)/(?P<slug>.+)$', writango_views.get_post),
+    url(r'^drafts/@(?P<username>.+)/edit/(?P<slug>.+)$', writango_views.update_post),
+    url(r'^posts/(?P<id>.+)/delete$', writango_views.delete_post),
+    url(r'^drafts/(?P<id>.+)/publish$', writango_views.publish_draft),
+    url(r'^posts/@(?P<username>.+)$', writango_views.get_posts),
+    url(r'^drafts/@(?P<username>.+)$', writango_views.get_drafts),
     url(r'^static/(?P<path>.*)$', writango_views.serve_static),
     url(r'^writes/.+$', writango_views.index),
     url(r'^$', writango_views.index),
@@ -34,5 +30,3 @@ urlpatterns = [
     # url(r'^writes/@(?P<username>.+)/edit/(?P<post>.+)$'),
     # url(r'^writes/@(?P<username>.+)/posts/(?P<post>.+)$'),
 ]
-# if settings.DEBUG:
-#     urlpatterns += [url(r'^static/(?P<path>.*)$', writango_views.serve_static)]

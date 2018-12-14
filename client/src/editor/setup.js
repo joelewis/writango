@@ -22,19 +22,17 @@ var getPlugins = function(options) {
         prosemirrorDropcursor.dropCursor(),
         prosemirrorGapcursor.gapCursor()
     ];
-    // if (options.menuBar !== false) { 
-    // plugins.push(prosemirrorMenu.menuBar({
-    //     floating: true,
-    //     content: buildMenuItems(options.schema).fullMenu.map(function(menuBlocks) { // ma & filter to remove unneeded menu items
-    //          return menuBlocks.filter(function(menu) {
-    //              return menu !== prosemirrorMenu.selectParentNodeItem;
-    //          });
-    //     })
-    // })); 
-    // }
-    if (options.history !== false) { 
-        plugins.push(prosemirrorHistory.history()); 
+    if (options.menubar) {
+        plugins.push(prosemirrorMenu.menuBar({
+            floating: false,
+            content: buildMenuItems(options.schema).fullMenu.map(function(menuBlocks) { // ma & filter to remove unneeded menu items
+                return menuBlocks.filter(function(menu) {
+                    return menu !== prosemirrorMenu.selectParentNodeItem;
+                });
+            })
+        })); 
     }
+    plugins.push(prosemirrorHistory.history()); 
 
     return plugins.concat(new prosemirrorState.Plugin({
         props: {
