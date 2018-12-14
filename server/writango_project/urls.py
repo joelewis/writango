@@ -11,6 +11,9 @@ from django.views.static import serve
 # print static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^login/', writango_views.writango_login),
+    url(r'^register/', writango_views.writango_register),
+    url(r'^logout/', writango_views.writango_logout),
     url(r'^session/get$', writango_views.get_session),
     url(r'^create/draft$', writango_views.create_draft), # TODO: GET URL UGLY. MAKE IT POST.
     url(r'^posts/$', writango_views.get_posts),
@@ -21,7 +24,7 @@ urlpatterns = [
     url(r'^drafts/(?P<id>.+)/publish$', writango_views.publish_draft),
     url(r'^posts/@(?P<username>.+)$', writango_views.get_posts),
     url(r'^drafts/@(?P<username>.+)$', writango_views.get_drafts),
-    url(r'^static/(?P<path>.*)$', writango_views.serve_static),
+    url(r'^writango/static/(?P<path>.*)$', writango_views.serve_static),
     url(r'^writes/.+$', writango_views.index),
     url(r'^$', writango_views.index),
 

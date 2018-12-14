@@ -8,5 +8,6 @@
 8. [done] Rich text editing toolbar should be customized. 
 9. Register / Login flow APIs & Pages.
 10. Encrypt/decrpyt sessions in URL.
-11. Publish action on draft page
+11. [done] Publish action on draft page
+12. [done] Favicon & Title
 

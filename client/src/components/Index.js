@@ -10,6 +10,7 @@ import PostView from './PostView.js'
 import PostPlay from './PostPlay.js'
 import DraftList from './DraftList.js'
 import HomeMenu from './HomeMenu.js'
+import AuthScreen from './AuthScreen.js'
 import Model from '../models'
 import {createBrowserHistory} from 'history';
 import $ from 'jquery';
@@ -78,6 +79,7 @@ class Index extends Component{
                     <Route path="/writes/:username/posts/:postslug" exact component={PostView} />
                     <Route path="/writes/:username/edit/:postslug" exact component={PostEdit} />
                     <Route path="/writes/:username/play/:postslug" exact component={PostPlay} />
+                    <Route path="/writes/auth/:page" exact component={AuthScreen} />
                     </div>
             </Content>
             <Footer style={{ textAlign: 'center' }}>

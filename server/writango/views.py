@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 import json
+from django.template import loader
 from django.shortcuts import render
 from django.views.static import serve
 from django.http import HttpResponse, JsonResponse
@@ -12,16 +13,62 @@ from django.core.exceptions import SuspiciousOperation, ObjectDoesNotExist
 from models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
+from django.contrib.auth import authenticate, login
 
 
 anonymous_draft_limit = 5
 
 def index(request):
-    return serve(request, 'index.html', document_root=settings.STATIC_ROOT)
+    template = loader.get_template('index.html')
+    return HttpResponse(template.render({
+        "STATIC_HOST": settings.STATIC_HOST
+    }, request))
 
 def serve_static(request, path):
     path = 'index.html' if path is "" else path # redirect to index.html if no path specified
     return serve(request, path, document_root=settings.STATIC_ROOT, show_indexes=True)
+
+@csrf_exempt
+def writango_login(request):
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    user = User.objects.filter(email=email)
+    if not user.exists():
+        return HttpResponse(json.dumps({"error": "We cannot find the account associated with that email."}), content_type="application/json", status=400)
+    user = user.first()
+    valid_password = user.check_password(password)
+    if not valid_password:
+        return HttpResponse(json.dumps({"error": "Incorrect password."}), content_type="application/json", status=400)
+    login(request, user)
+    return HttpResponse(json.dumps({"success": "user logged in"}), content_type="application/json")
+
+
+@csrf_exempt
+def writango_register(request):
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    username = email.split('@')[0]
+
+    username_taken = User.objects.filter(username=username).exists()
+    email_taken = User.objects.filter(email=email).exists()
+    if email_taken:
+        return HttpResponse(json.dumps({"error": "Email already registered with an existing account."}), content_type="application/json", status=400)
+    if username_taken:
+        username = username + '-' + User.objects.make_random_password(length=5, allowed_chars='123456789')
+
+    # get all posts by this session
+    posts = Post.objects.filter(session=request.session.session_key)
+    user = User(email=email, password=password)
+    user.save()
+    login(request, user)
+    # set user as author for all posts in his session
+    for post in posts:
+        post.author = user
+        post.save() # TODO: find a more efficient way to save excess db ops
+    return HttpResponse(json.dumps({"success": "user registered"}), content_type="application/json")
+
+def writango_logout(request):
+    pass
 
 def get_session(request):
     # user_dict = model_to_dict(request.user)
