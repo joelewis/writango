@@ -78,7 +78,6 @@ class PostView extends Component {
     }
 
     repositionMenubar() {
-        console.log(this.menubarDiv.current)
         var $menubar = $('.ProseMirror-menubar');
         $menubar.detach().appendTo(this.menubarDiv.current);
     }
@@ -93,7 +92,8 @@ class PostView extends Component {
 
     publish() {
         Model.publishDraft(this.state.post.pk).then(resp => {
-            console.log(resp);  
+            // redirect to posts listing
+            window.location.href = '/writes/' + this.props.match.params.username
         })
     }
 
@@ -135,7 +135,13 @@ class PostView extends Component {
                 </Card>
             )
         }
-        return (<div></div>)
+        return (
+            <div style={{minHeight: '100vh', width: '800px', margin: 'auto'}}>
+                <p>
+                    Sorry, either the requested post doesn't exist or you don't have necessary permissions to view the content.
+                </p>                
+            </div>
+        )
     }
 }
 

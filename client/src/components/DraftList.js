@@ -28,10 +28,10 @@ class DraftList extends Component {
     }
 
     processPosts(post) {
-        if (post.fields.user) {
-            post.editurl = "/writes/@"+post.fields.user.username + "/edit/" + self.fields.slug;
-            post.viewurl = "/writes/@"+post.fields.user.username + "/posts/" + self.fields.slug;
-            post.playurl = "/writes/@"+post.fields.user.username + "/play/" + self.fields.slug;
+        if (post.fields.author) {
+            post.editurl = "/writes/@"+post.fields.author.username + "/edit/" + post.fields.slug;
+            post.viewurl = "/writes/@"+post.fields.author.username + "/posts/" + post.fields.slug;
+            post.playurl = "/writes/@"+post.fields.author.username + "/play/" + post.fields.slug;
         } else {
             post.editurl = "/writes/@" + post.fields.session + "/edit/" + post.fields.slug;
             post.viewurl = "/writes/@" + post.fields.session + "/posts/" + post.fields.slug;
@@ -63,6 +63,18 @@ class DraftList extends Component {
         this.setState({posts: posts})
     }
 
+    createDraft() {
+        Model.createDraft().then((resp) => {
+            var post = resp;
+            if (post.fields.author) {
+                var edit_url = "/writes/@"+post.fields.author.username + "/edit/" + post.fields.slug;
+            } else {
+                var edit_url = "/writes/@" + post.fields.session + "/edit/" + post.fields.slug;
+            }
+            window.location.href = edit_url;
+        })
+    }
+
     render() {
         return (
             <Card className="width-60" style={{minHeight: '100vh', border: '0', margin: 'auto'}}>
@@ -70,7 +82,7 @@ class DraftList extends Component {
                 {console.log(this.state)}
                 {!this.state.posts.length && 
                     <div className="no-post-placeholder">
-                        <p><Icon type="smile" style={{margin: '0 10px'}}/>You have no drafts yet. <a href="#">Start Writing!</a></p>
+                        <p><Icon type="smile" style={{margin: '0 10px'}}/>You have no drafts yet. <a onClick={this.createDraft.bind(this)}>Start Writing!</a></p>
                     </div>
                 }
                 {!!this.state.posts.length && 

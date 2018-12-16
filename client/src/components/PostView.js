@@ -28,6 +28,8 @@ class PostView extends Component {
                 post: this.state.post,
                 editable: false
             })
+        }).catch(resp => {
+
         })
     }
 
@@ -45,7 +47,13 @@ class PostView extends Component {
                 </Card>
             )
         }
-        return (<div></div>)
+        return (
+            <div style={{minHeight: '100vh', width: '800px', margin: 'auto'}}>
+                <p>
+                    Sorry, either the requested post doesn't exist or you don't have necessary permissions to view the content.
+                </p>                
+            </div>
+        )
     }
 }
 

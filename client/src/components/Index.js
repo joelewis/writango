@@ -20,10 +20,10 @@ import $ from 'jquery';
 const AnonymousMenu = (
     <Menu>
       <Menu.Item key="0">
-        <a href="/register">Sign-up</a>
+        <Link to="/writes/auth/register">Register</Link>
       </Menu.Item>
       <Menu.Item key="1">
-        <a href="/login">Login</a>
+      <Link to="/writes/auth/login">Login</Link>
       </Menu.Item>
     </Menu>
 );
