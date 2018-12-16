@@ -32,9 +32,6 @@ class Landing extends Component{
                     </Col>
                 </Row>
                 </div>
-                {/* <div className="landing-block">
-
-                </div> */}
                 <div className="landing-block">
                     <h3> Write & Publish. No sign-up required. </h3>
                     <p>
