@@ -1,8 +1,9 @@
 import React, {Component} from "react";
 import {
-    Form, Icon, Input, Button, Card,
+    Form, Icon, Input, Button, Card, Alert
   } from 'antd';
 import { Link } from "react-router-dom";
+import Model from "../models";
   
   const FormItem = Form.Item;
   
@@ -10,24 +11,45 @@ import { Link } from "react-router-dom";
 
     constructor(props) {
         super(props)
-        console.log(props)
+        this.state = {
+            loginError: null,
+            registerError: null
+        }
     }
 
     handleLogin(e) {
-      this.props.form.validateFields((err, values) => {
-        if (!err) {
-          this.props.form.submit()
-        }
         e.preventDefault();
-      });
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                var email = this.props.form.getFieldValue('email')
+                var password = this.props.form.getFieldValue('password')
+                Model.loginUser(email, password).then(resp => {                    
+                    window.location.href = '/writes/@' + resp.username + '/drafts'
+                }).catch(resp => {
+                    var error = resp.responseJSON.error;
+                    this.setState({
+                        loginError: error
+                    })
+                });
+            }
+        });
     }
 
     handleRegister(e) {
+        e.preventDefault();
         this.props.form.validateFields((err, values) => {
-          if (!err) {
-            this.props.form.submit()
-          }
-          e.preventDefault();
+            if (!err) {
+                var email = this.props.form.getFieldValue('emailRegister')
+                var password = this.props.form.getFieldValue('passwordRegister')
+                Model.registerUser(email, password).then(resp => {
+                    window.location.href = '/writes/@' + resp.username + '/drafts'
+                }).catch(resp => {
+                    var error = resp.responseJSON.error;
+                    this.setState({
+                        registerError: error
+                    })
+                });
+            }
         });
     }
 
@@ -45,9 +67,17 @@ import { Link } from "react-router-dom";
       return (
             <Card className="width-60" style={{minHeight: '100vh', border: '0', margin: 'auto'}}>
                 {this.props.match.params.page === 'register' && (<Form action="/register/" method="post" onSubmit={this.handleRegister.bind(this)} className="login-form" style={{width: '300px', margin: 'auto'}}>
+                <Alert
+                    message="Sorry"
+                    description={this.state.registerError}
+                    type="error"
+                    showIcon
+                    closable
+                    style={{display: this.state.registerError ? 'block': 'none', marginBottom: '10px'}}
+                />
                 <FormItem>
                     {getFieldDecorator('emailRegister', {
-                    rules: [{ required: true, message: 'Please enter your email' }],
+                    rules: [{ type: 'email', required: true, message: 'Please enter your email' }],
                     })(
                     <Input name="email" style={{height: '32px'}} prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
                     )}
@@ -75,9 +105,18 @@ import { Link } from "react-router-dom";
                 </Form>)}
                 
                 {this.props.match.params.page === 'login' && (<Form action="/login/" method="post" onSubmit={this.handleLogin.bind(this)} className="login-form" style={{width: '300px', margin: 'auto'}}>
+                
+                <Alert
+                    message="Sorry"
+                    description={this.state.loginError}
+                    type="error"
+                    showIcon
+                    style={{display: this.state.loginError ? 'block': 'none', marginBottom: '10px'}}
+                    closable
+                />
                 <FormItem>
                     {getFieldDecorator('email', {
-                    rules: [{ required: true, message: 'Please enter your email' }],
+                    rules: [{ type: 'email', required: true, message: 'Please enter your email' }],
                     })(
                     <Input name="email" style={{height: '32px'}} prefix={<Icon type="mail" style={{ color: 'rgba(0,0,0,.25)' }} />} placeholder="Email" />
                     )}

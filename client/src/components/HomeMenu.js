@@ -33,9 +33,10 @@ class HomeMenu extends Component {
 
     createDraft() {
         Model.createDraft().then((resp) => {
+            console.log(resp);
             var post = resp;
-            if (post.fields.user) {
-                var edit_url = "/writes/@"+post.fields.user.username + "/edit/" + self.fields.slug;
+            if (post.fields.author) {
+                var edit_url = "/writes/@"+post.fields.author.username + "/edit/" + post.fields.slug;
             } else {
                 var edit_url = "/writes/@" + post.fields.session + "/edit/" + post.fields.slug;
             }
@@ -53,8 +54,8 @@ class HomeMenu extends Component {
             className="writango-menu-container" 
             onSelect={this.onSelect.bind(this)}
         >
-            <Menu.Item key="posts" ><Link to={"/writes/@"+Model.session.user.id}>Posts</Link></Menu.Item>
-            <Menu.Item key="drafts"><Link to={"/writes/@"+Model.session.user.id+"/drafts"}>Drafts</Link></Menu.Item>
+            <Menu.Item key="posts" ><Link to={"/writes/@"+Model.session.user.username}>Posts</Link></Menu.Item>
+            <Menu.Item key="drafts"><Link to={"/writes/@"+Model.session.user.username+"/drafts"}>Drafts</Link></Menu.Item>
             <Menu.Item key="write" onClick={this.createDraft.bind(this)}>Write</Menu.Item>
             {/* <Menu.Item key="3">nav 3</Menu.Item> */}
         </Menu>

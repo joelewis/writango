@@ -70,7 +70,13 @@ model.publishDraft = function(id) {
     })
 }
 
+model.loginUser = (email, password) => {
+    return $.post('/login/', {email: email, password: password});
+}
 
+model.registerUser = (email, password) => {
+    return $.post('/register/', {email: email, password: password});
+}
 
 window.model = model;
 

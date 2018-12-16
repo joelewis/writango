@@ -5,7 +5,7 @@ import json
 from django.template import loader
 from django.shortcuts import render
 from django.views.static import serve
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.conf import settings
 from django.forms.models import model_to_dict
 from django.core import serializers
@@ -13,7 +13,7 @@ from django.core.exceptions import SuspiciousOperation, ObjectDoesNotExist
 from models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 
 anonymous_draft_limit = 5
@@ -40,7 +40,7 @@ def writango_login(request):
     if not valid_password:
         return HttpResponse(json.dumps({"error": "Incorrect password."}), content_type="application/json", status=400)
     login(request, user)
-    return HttpResponse(json.dumps({"success": "user logged in"}), content_type="application/json")
+    return HttpResponse(json.dumps({"success": "user logged in", "username": user.username}), content_type="application/json")
 
 
 @csrf_exempt
@@ -58,17 +58,18 @@ def writango_register(request):
 
     # get all posts by this session
     posts = Post.objects.filter(session=request.session.session_key)
-    user = User(email=email, password=password)
+    user = User(email=email, password=password, username=username)
     user.save()
     login(request, user)
     # set user as author for all posts in his session
     for post in posts:
         post.author = user
         post.save() # TODO: find a more efficient way to save excess db ops
-    return HttpResponse(json.dumps({"success": "user registered"}), content_type="application/json")
+    return HttpResponse(json.dumps({"success": "user registered", "username": user.username}), content_type="application/json")
 
 def writango_logout(request):
-    pass
+    logout(request)
+    return HttpResponseRedirect('/')
 
 def get_session(request):
     # user_dict = model_to_dict(request.user)
@@ -100,7 +101,7 @@ def get_session(request):
 def create_draft(request):
     if request.user.is_authenticated():
         # create post with user as author
-        post = Post(user=request.user, title="Untitled Post")
+        post = Post(author=request.user, title="Untitled Post")
     else:
         # ensure max_post_limit is not reached
         posts_by_session = Post.objects.filter(session=request.session.session_key)
@@ -111,7 +112,15 @@ def create_draft(request):
         
     post.save()
     posts = json.loads(serializers.serialize("json", [post]))
-    return HttpResponse(json.dumps(posts[0]), content_type="application/json")
+    post = posts[0]
+
+    if post["fields"]["author"] != None:
+        author = User.objects.get(id=post["fields"]["author"])
+        post["fields"]["author"] = {
+            "id": author.id,
+            "username": author.username
+        }
+    return HttpResponse(json.dumps(post), content_type="application/json")
 
 def publish_draft(request, id):
     post = Post.objects.filter(id=id)
@@ -124,7 +133,7 @@ def publish_draft(request, id):
         raise SuspiciousOperation('Invalid Authorization')
 
     post.is_published = True
-    post.save()
+    post.save(reslug=True)
     return JsonResponse({"published": True})
 
 
@@ -150,11 +159,18 @@ def get_posts(request, username=None):
     current_page = request.GET.get('page') or "1"
     current_page = int(current_page)
     posts = get_posts_for_username(request, username)
-    posts = posts.filter(is_published=True)
+    posts = posts.filter(is_published=True).order_by('-modified_date')
     pages = Paginator(posts, 5)
-    # import pdb; pdb.set_trace()
     page = pages.page(current_page)
     posts = json.loads(serializers.serialize("json", page.object_list))
+
+    for p in posts:
+        if p["fields"]["author"] != None:
+            author = User.objects.get(id=p["fields"]["author"])
+            p["fields"]["author"] = {
+                "id": author.id,
+                "username": author.username
+            }
     return HttpResponse(json.dumps({
         "posts": posts, 
         "num_pages": pages.num_pages,
@@ -169,7 +185,7 @@ def user_exists(username):
 
 def authorize_user(request, username):
     if (user_exists(username)):
-        if not request.user.is_authenticated() or request.user.username is not username:
+        if not request.user.is_authenticated() and request.user.username is not username:
             raise SuspiciousOperation('Invalid Authorization')
     else:
         if username != request.session.session_key:
@@ -180,11 +196,17 @@ def get_drafts(request, username=None):
     current_page = request.GET.get('page') or "1"
     current_page = int(current_page)
     posts = get_posts_for_username(request, username)
-    posts = posts.filter(is_published=False)
+    posts = posts.filter(is_published=False).order_by('-modified_date')
     pages = Paginator(posts, 5)
-    # import pdb; pdb.set_trace()
     page = pages.page(current_page)
     posts = json.loads(serializers.serialize("json", page.object_list))
+    for p in posts:
+        if p["fields"]["author"] != None:
+            author = User.objects.get(id=p["fields"]["author"])
+            p["fields"]["author"] = {
+                "id": author.id,
+                "username": author.username
+            }
     return HttpResponse(json.dumps({
         "posts": posts, 
         "num_pages": pages.num_pages,
@@ -197,6 +219,13 @@ def get_post(request, username, slug):
     posts = posts.filter(slug=slug)
     if not posts.exists():
         raise ObjectDoesNotExist("Please check post id")
+    
+    # authorize
+    post = posts[0]
+    if not post.is_published and post.author != request.user and post.session != request.session.session_key:
+        # if draft state post: ensure only post.author or post.session can access
+        raise SuspiciousOperation('Invalid Authorization')
+
     posts = json.loads(serializers.serialize("json", posts))
     post = posts[0]
     return JsonResponse(post)

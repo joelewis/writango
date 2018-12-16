@@ -24,11 +24,10 @@ body {
 }
 
 .landing-block {
-    height: 400px;
-    width: 60%;
-    margin: 50px;
+    height: 300px;
+    margin-top: 50px;
     /* background: #efefef; */
-    padding: 50px;
+    /* padding: 50px; */
     font-size: 24px;
     font-family: 'Source Sans Pro', sans-serif !important;
 }
