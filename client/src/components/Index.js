@@ -5,15 +5,33 @@ const { Header, Footer, Sider, Content } = Layout;
 import { BrowserRouter as Router, Route, Link, NavLink } from "react-router-dom";
 import Landing from './Landing.js'
 import PostList from './PostList.js'
-import PostEdit from './PostEdit.js'
-import PostView from './PostView.js'
-import PostPlay from './PostPlay.js'
 import DraftList from './DraftList.js'
 import HomeMenu from './HomeMenu.js'
 import AuthScreen from './AuthScreen.js'
 import Model from '../models'
-import {createBrowserHistory} from 'history';
+import Loadable from 'react-loadable'
 import $ from 'jquery';
+
+
+// import PostEdit from './PostEdit.js'
+// import PostView from './PostView.js'
+// import PostPlay from './PostPlay.js'
+
+
+var PostEdit = Loadable({
+    loader: () => import ('./PostEdit.js'),
+    loading: () => <div>Loading...</div>
+})
+
+var PostView = Loadable({
+    loader: () => import ('./PostView.js'),
+    loading: () => <div>Loading...</div>
+})
+
+var PostPlay = Loadable({
+    loader: () => import ('./PostPlay.js'),
+    loading: () => <div>Loading...</div>
+})
 
 
 

@@ -1,5 +1,5 @@
 import $ from 'jquery';
-import {newPostJSON} from './editor';
+import {newPostJSON} from "./editor/placeholders.js"
 /**
  * Client DB
  * Holds the information necessary for components

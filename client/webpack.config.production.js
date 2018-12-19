@@ -1,6 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 module.exports = {
   entry: "./src/index.js",
@@ -14,16 +15,15 @@ module.exports = {
         options: { presets: ["@babel/env"] }
       },
       {
-        test: /\.css$/,
-        use: ["style-loader", "css-loader"]
-      },
-      {
         test: /\.less$/,
-        use: [{
-          loader: 'style-loader',
-        }, {
-          loader: 'css-loader', // translates CSS into CommonJS
-        }, {
+        use: [
+        {
+          loader: MiniCssExtractPlugin.loader
+        },
+        {
+          loader: 'css-loader'
+        },
+        {
           loader: 'less-loader', // compiles Less to CSS
           options: { 
             modifyVars: {
@@ -51,10 +51,17 @@ module.exports = {
   resolve: { extensions: ["*", ".js", ".jsx", ".less"] },
   output: {
     path: path.resolve(__dirname, "public/js/"),
-    // publicPath: "/dist/",
+    publicPath: "/writango/static/js/",
     filename: "bundle.js"
   },
   plugins: [
     new MinifyPlugin(),
+    new MiniCssExtractPlugin({
+      // Options similar to the same options in webpackOptions.output
+      // both options are optional
+      filename: "[name].css",
+      // chunkFilename: "[id].css",
+      publicPath: "/writango/static/css/",
+    })
   ]
 };

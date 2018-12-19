@@ -6,19 +6,7 @@ import {exampleSetup} from "prosemirror-example-setup"
 import schema from "./schema.js"
 import {getPlugins} from "./setup.js"
 import {PostPlayer, getEmptyDocJSON} from "./PostPlayer.js"
-
-
-
-
-var newPostJSON = () => {
-    return {"type":"doc","content":[{"type":"paragraph","content":[{"type":"text","text":"Start writing your post here…"}]}]};
-};
-
-
-var newTitleJSON = () => {
-    return {"type":"doc","content":[{"type":"text","text":"Untitled Post"}]};
-}; 
-
+import {newPostJSON, newTitleJSON} from "./placeholders.js"
 
 var getDocFromPost = function(post) {
     if (post.fields.text) {
