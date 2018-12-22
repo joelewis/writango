@@ -151,6 +151,7 @@ class PostPlay extends Component {
                     <div className="writango-controls">
                         <Icon onClick={this.prev.bind(this)} className={"writango-control-btn " + (this.state.leftArrowDown ? "writango-control-btn-selected" : "")} type="caret-left"></Icon>
                         <Icon onClick={this.next.bind(this)} className={"writango-control-btn " + (this.state.rightArrowDown ? "writango-control-btn-selected" : "")} type="caret-right"></Icon>
+                        <p style={{textAlign: 'center'}}> <Icon type="arrow-left"></Icon> use arrow keys <Icon type="arrow-right"></Icon></p>
                     </div>
                 </div>
             )
