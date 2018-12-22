@@ -10,7 +10,8 @@ class PostPlay extends Component {
         this.state = {
             post: {},
             leftArrowDown: false,
-            rightArrowDown: true
+            rightArrowDown: true,
+            loading: true
         }
         // create ref for prosemirror div
         this.editorDiv = React.createRef();
@@ -40,6 +41,7 @@ class PostPlay extends Component {
             var shadowRect = shadowDiv.getBoundingClientRect();
             editorDiv.style.height = shadowRect.height + 'px';
             shadowDiv.style.display = 'none';
+            this.setState({loading: false})
         })
 
         // TODO: this.handleKeydown.bind(this) is going to create a new instance of the method.
@@ -49,7 +51,6 @@ class PostPlay extends Component {
     }
 
     repositionMenubar() {
-        console.log(this.menubarDiv.current)
         var $menubar = $('.ProseMirror-menubar');
         $menubar.detach().appendTo(this.menubarDiv.current);
     }
@@ -152,6 +153,10 @@ class PostPlay extends Component {
                         <Icon onClick={this.next.bind(this)} className={"writango-control-btn " + (this.state.rightArrowDown ? "writango-control-btn-selected" : "")} type="caret-right"></Icon>
                     </div>
                 </div>
+            )
+        } else if (this.state.loading) {
+            return (
+                <div style={{minHeight: '100vh'}}></div>
             )
         }
         return (

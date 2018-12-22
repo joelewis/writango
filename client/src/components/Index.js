@@ -20,17 +20,17 @@ import $ from 'jquery';
 
 var PostEdit = Loadable({
     loader: () => import ('./PostEdit.js'),
-    loading: () => <div>Loading...</div>
+    loading: () => <div></div>
 })
 
 var PostView = Loadable({
     loader: () => import ('./PostView.js'),
-    loading: () => <div>Loading...</div>
+    loading: () => <div></div>
 })
 
 var PostPlay = Loadable({
     loader: () => import ('./PostPlay.js'),
-    loading: () => <div>Loading...</div>
+    loading: () => <div></div>
 })
 
 
@@ -89,7 +89,7 @@ class Index extends Component{
             </Dropdown>
             <HomeMenu selectedKey={this.state.selectedKey} onSelect={this.onSelect.bind(this)}/>
             </Header>
-            <Content className="width-100" style={{ padding: '20px 20px', background: '#fff', margin: 'auto', marginTop: '20px' }}>
+            <Content className="width-100" style={{ minHeight: '100vh', padding: '20px 20px', background: '#fff', margin: 'auto', marginTop: '20px' }}>
                     <div>
                     <Route path="/" exact component={Landing} />
                     <Route path="/writes/:username" exact component={PostList} />

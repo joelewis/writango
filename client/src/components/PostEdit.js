@@ -10,7 +10,8 @@ class PostView extends Component {
         super(props);
         this.state = {
             post: {},
-            selectionActive: false
+            selectionActive: false,
+            loading: true
         }
 
         // create ref for prosemirror div
@@ -57,7 +58,7 @@ class PostView extends Component {
     componentWillMount() {
         var self = this;
         Model.loadPost(this.props.match.params.username, this.props.match.params.postslug).then(() => {
-            this.setState({post: Model.currentDoc})
+            this.setState({post: Model.currentDoc, loading: false})
             var editorDiv = this.editorDiv.current;
             var titleEditorDiv = this.titleEditorDiv.current;
             window.editor = Editor.init(editorDiv, {
@@ -133,6 +134,10 @@ class PostView extends Component {
                         </div>
                     </div>
                 </Card>
+            )
+        } else if (this.state.loading) {
+            return (
+                <div style={{minHeight: '100vh'}}></div>
             )
         }
         return (

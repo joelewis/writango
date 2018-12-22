@@ -76,6 +76,10 @@ class DraftList extends Component {
         })
     }
 
+    isOwner(post) {
+        return post.fields.author.username === Model.session.user.username || post.fields.session === Model.session.user.username;
+    }   
+
     render() {
         return (
             <Card className="width-60" style={{minHeight: '100vh', border: '0', margin: 'auto'}}>
@@ -95,9 +99,9 @@ class DraftList extends Component {
                             actions={[
                                 <Link to={item.playurl}>Play</Link>,
                                 <Link to={item.viewurl}>View</Link>,
-                                <Link to={item.editurl}>Edit</Link>,
+                                <Link style={{display: this.isOwner(item) ? 'block': 'none' }} to={item.editurl}>Edit</Link>,
                                 <Popconfirm title="Are you sure you want to delete this piece?" onConfirm={this.deletePost.bind(this, item)} okText="Yes" cancelText="No">
-                                    <a>Delete</a>
+                                    <a style={{display: this.isOwner(item) ? 'block': 'none' }}>Delete</a>
                                 </Popconfirm>
                             ]}
                             >

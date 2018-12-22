@@ -6,7 +6,8 @@ class PostView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            post: {}
+            post: {},
+            loading: true
         }
 
         // create ref for prosemirror div
@@ -17,7 +18,7 @@ class PostView extends Component {
     componentWillMount() {
         var self = this;
         Model.loadPost(this.props.match.params.username, this.props.match.params.postslug).then(() => {
-            this.setState({post: Model.currentDoc})
+            this.setState({post: Model.currentDoc, loading: false})
             var editorDiv = this.editorDiv.current;
             var titleEditorDiv = this.titleEditorDiv.current;
             window.editor = Editor.init(editorDiv, {
@@ -46,12 +47,16 @@ class PostView extends Component {
                 </div>
                 </Card>
             )
+        } else if (this.state.loading) {
+            return (
+                <div style={{minHeight: '100vh'}}></div>
+            )
         }
         return (
             <div style={{minHeight: '100vh', width: '800px', margin: 'auto'}}>
                 <p>
                     Sorry, either the requested post doesn't exist or you don't have necessary permissions to view the content.
-                </p>                
+                </p>
             </div>
         )
     }

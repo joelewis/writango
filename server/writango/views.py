@@ -155,7 +155,7 @@ def get_posts_for_username(request, username=None):
     return posts
 
 def get_posts(request, username=None):
-    authorize_user(request, username)
+    # authorize_user(request, username)
     current_page = request.GET.get('page') or "1"
     current_page = int(current_page)
     posts = get_posts_for_username(request, username)
