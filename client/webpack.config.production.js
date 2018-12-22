@@ -3,6 +3,8 @@ const webpack = require("webpack");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const STATIC_HOST = 'https://hexopress.sgp1.cdn.digitaloceanspaces.com';
+
 module.exports = {
   entry: "./src/index.js",
   mode: "production",
@@ -51,7 +53,7 @@ module.exports = {
   resolve: { extensions: ["*", ".js", ".jsx", ".less"] },
   output: {
     path: path.resolve(__dirname, "public/js/"),
-    publicPath: "/writango/static/js/",
+    publicPath: STATIC_HOST + "/writango/static/js/",
     filename: "bundle.js"
   },
   plugins: [
@@ -61,7 +63,7 @@ module.exports = {
       // both options are optional
       filename: "[name].css",
       // chunkFilename: "[id].css",
-      publicPath: "/writango/static/css/",
+      publicPath: STATIC_HOST + "/writango/static/css/",
     })
   ]
 };

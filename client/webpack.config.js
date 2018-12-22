@@ -2,6 +2,8 @@ const path = require("path");
 const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
+const STATIC_HOST = '';
+
 module.exports = {
   entry: "./src/index.js",
   mode: "development",
@@ -50,7 +52,7 @@ module.exports = {
   resolve: { extensions: ["*", ".js", ".jsx", ".less"] },
   output: {
     path: path.resolve(__dirname, "public/js/"),
-    publicPath: "/writango/static/js/",
+    publicPath: STATIC_HOST + "/writango/static/js/",
     filename: "bundle.js"
   },
   devServer: {
@@ -66,7 +68,7 @@ module.exports = {
       path: path.resolve(__dirname, "public/css/"),
       filename: "[name].css",
       // chunkFilename: "[id].css",
-      publicPath: "/writango/static/css/",
+      publicPath: STATIC_HOST + "/writango/static/css/",
     })
   ]
 };
