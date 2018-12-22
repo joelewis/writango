@@ -7,9 +7,10 @@
 7. [done] More formatting options like codeblocks, images, etc. 
 8. [done] Rich text editing toolbar should be customized. 
 9. [done] Register / Login flow APIs & Pages.
-10. Encrypt/decrpyt sessions in URL.
+10. [done] Encrypt/decrpyt sessions in URL.
 11. [done] Publish action on draft page
 12. [done] Favicon & Title
 13. Proper error responses with HTTP codes
 13. Exception handling and error reporting
 14. Higher Order Components to inject shared behavior (createDraft, list, etc)
+15. [important] The PostView page should contain author information and link to author's other posts.

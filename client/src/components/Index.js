@@ -84,7 +84,7 @@ class Index extends Component{
             <div onClick={() => { $(window).trigger('RefreshMenu') }} className="writango-logo"><Link style={{ textDecoration: 'none',  color: '#555'}} to="/"> <span className="font-color-blue">W</span>RITANG<span className="font-color-blue">O</span></Link></div>
             <Dropdown  className="writango-menu-container" overlay={Model.session.user.anonymous ? AnonymousMenu : UserMenu} trigger={['click']}>
                 <a style={{float: "right"}} className="ant-dropdown-link" href="#">
-                    {Model.session.user.anonymous ? "Hello, Mr. Anonymous!" : Model.session.user.email} <Icon type="down" />
+                    <Icon type="user" /> {Model.session.user.anonymous ? "Hello, Guest!" : Model.session.user.email} <Icon type="down" />
                 </a>
             </Dropdown>
             <HomeMenu selectedKey={this.state.selectedKey} onSelect={this.onSelect.bind(this)}/>

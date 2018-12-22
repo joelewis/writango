@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const MinifyPlugin = require("babel-minify-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
-const STATIC_HOST = 'https://hexopress.sgp1.cdn.digitaloceanspaces.com';
+const STATIC_HOST = 'https://hexopress.sgp1.cdn.digitaloceanspaces.com'; // configure your own static provider domain
 
 module.exports = {
   entry: "./src/index.js",

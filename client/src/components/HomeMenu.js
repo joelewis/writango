@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {createBrowserHistory} from 'history';
-import {Menu} from 'antd';
+import {Menu, Icon} from 'antd';
 import {Link} from "react-router-dom";
 import Model from '../models.js'
 import $ from 'jquery';
@@ -54,9 +54,9 @@ class HomeMenu extends Component {
             className="writango-menu-container" 
             onSelect={this.onSelect.bind(this)}
         >
-            <Menu.Item key="posts" ><Link to={"/writes/@"+Model.session.user.username}>Posts</Link></Menu.Item>
-            <Menu.Item key="drafts"><Link to={"/writes/@"+Model.session.user.username+"/drafts"}>Drafts</Link></Menu.Item>
-            <Menu.Item key="write" onClick={this.createDraft.bind(this)}>Write</Menu.Item>
+            <Menu.Item key="posts" ><Link to={"/writes/@"+Model.session.user.username}><Icon type="global" style={{color: "#52c41a"}} />Posts</Link></Menu.Item>
+            <Menu.Item key="drafts"><Link to={"/writes/@"+Model.session.user.username+"/drafts"}><Icon type="save" theme="twoTone" twoToneColor="#eb2f96" />Drafts</Link></Menu.Item>
+            <Menu.Item key="write" onClick={this.createDraft.bind(this)}><Icon type="edit" theme="twoTone" />Write</Menu.Item>
             {/* <Menu.Item key="3">nav 3</Menu.Item> */}
         </Menu>
         )

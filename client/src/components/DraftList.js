@@ -93,11 +93,11 @@ class DraftList extends Component {
                         renderItem={item => (
                         <List.Item
                             actions={[
-                                <Link to={item.editurl}>Edit</Link>, 
-                                <Link to={item.viewurl}>View</Link>,
-                                <Link to={item.playurl}>Play</Link>,
+                                <Link to={item.playurl}><Icon type="caret-right" style={{color: '#3eb995'}} /> Play</Link>,
+                                <Link to={item.viewurl}><Icon type="eye" theme="twoTone" twoToneColor="#6f10e4" /> View</Link>,
+                                <Link to={item.editurl}><Icon type="edit" theme="twoTone" twoToneColor="#0098ff" /> Edit</Link>, 
                                 <Popconfirm title="Are you sure you want to delete this piece?" onConfirm={this.deletePost.bind(this, item)} okText="Yes" cancelText="No">
-                                    <a>Delete</a>
+                                    <a><Icon type="delete" theme="twoTone" twoToneColor="#ff4d4f" /> Delete</a>
                                 </Popconfirm>
                             ]}
                             >
