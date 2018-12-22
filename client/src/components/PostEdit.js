@@ -1,6 +1,6 @@
 import React, {Component} from "react";
 import Model from "../models.js"
-import { Card, Button } from "antd";
+import { Card, Button, Popconfirm } from "antd";
 import { Editor } from '../editor'
 import $ from 'jquery';
 
@@ -94,20 +94,22 @@ class PostView extends Component {
     publish() {
         Model.publishDraft(this.state.post.pk).then(resp => {
             // redirect to posts listing
-            window.location.href = '/writes/' + this.props.match.params.username
+            this.props.history.push('/writes/' + this.props.match.params.username)
+            // window.location.href = '/writes/' + this.props.match.params.username
         })
     }
 
     play() {
-
+        this.props.history.push('/writes/' + this.props.match.params.username + '/play/' + this.state.post.fields.slug)
     }
 
     view() {
-
+        this.props.history.push('/writes/' + this.props.match.params.username + '/posts/' + this.state.post.fields.slug)
     }
 
-    delete() {
-
+    delete(post) {
+        Model.deletePost(post.pk)
+        this.props.history.push('/writes/' + this.props.match.params.username)
     }
 
     render() {
@@ -119,9 +121,11 @@ class PostView extends Component {
                     extra={
                         <Button.Group>
                             <Button type="primary" onClick={this.publish.bind(this)}>Publish</Button>
-                            <Button>Play</Button>
-                            <Button>View</Button>
-                            <Button type="danger">Delete</Button>
+                            <Button onClick={this.play.bind(this)}>Play</Button>
+                            <Button onClick={this.view.bind(this)}>View</Button>
+                            <Popconfirm title="Are you sure you want to delete this piece?" onClick={this.delete.bind(this, this.state.post)} okText="Yes" cancelText="No">
+                                <Button type="danger">Delete</Button>
+                            </Popconfirm>
                         </Button.Group>
                         }
                 >

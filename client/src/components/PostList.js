@@ -77,8 +77,9 @@ class DraftList extends Component {
     }
 
     isOwner(post) {
-        return post.fields.author.username === Model.session.user.username || post.fields.session === Model.session.user.username;
-    }   
+        if (!post.fields) { return false; }
+        return (post.fields.author && post.fields.author.username === Model.session.user.username) || post.fields.session === Model.session.user.username;
+    }
 
     render() {
         return (

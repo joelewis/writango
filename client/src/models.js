@@ -14,7 +14,7 @@ var model = {
 
 model.loadSession = function() {
     return $.get('/session/get').done((resp) => {
-        model.session.session_key = resp.session_key;
+        // model.session.session_key = resp.session_key;
         model.session.user = resp.user;
     });
 }
@@ -60,13 +60,11 @@ model.createDraft = function() {
 
 model.deletePost = function(id) {
     return $.get('/posts/'+id+'/delete').done(resp => {
-        console.log(resp);
     })
 }
 
 model.publishDraft = function(id) {
     return $.get('/drafts/'+id+'/publish').done(resp => {
-        console.log(resp);
     })
 }
 

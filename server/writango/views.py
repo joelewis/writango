@@ -14,9 +14,20 @@ from models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login, logout
+from Crypto.Cipher import XOR
+import base64
 
 
 anonymous_draft_limit = 5
+
+
+def encrypt(key, plaintext):
+  cipher = XOR.new(key)
+  return base64.b64encode(cipher.encrypt(plaintext))
+
+def decrypt(key, encryptedtext):
+  cipher = XOR.new(key)
+  return cipher.decrypt(base64.b64decode(encryptedtext))
 
 def index(request):
     template = loader.get_template('index.html')
@@ -57,7 +68,8 @@ def writango_register(request):
         username = username + '-' + User.objects.make_random_password(length=5, allowed_chars='123456789')
 
     # get all posts by this session
-    posts = Post.objects.filter(session=request.session.session_key)
+    session_key = encrypt(settings.SECRET_KEY, request.session.session_key)
+    posts = Post.objects.filter(session=session_key)
     user = User(email=email, password=password, username=username)
     user.save()
     login(request, user)
@@ -82,13 +94,13 @@ def get_session(request):
         if not request.session.session_key:
             request.session.save()
 
-        user_id = request.session.session_key
-        username = request.session.session_key
+        session_key = encrypt(settings.SECRET_KEY, request.session.session_key)
+        user_id = session_key
+        username = session_key
         email = ""
         anonymous = True
     
     return JsonResponse({
-        "session_key": request.session.session_key,
         "user": {
             "id": user_id,
             "username": username,
@@ -104,11 +116,12 @@ def create_draft(request):
         post = Post(author=request.user, title="Untitled Post")
     else:
         # ensure max_post_limit is not reached
-        posts_by_session = Post.objects.filter(session=request.session.session_key)
+        session_key = encrypt(settings.SECRET_KEY, request.session.session_key)
+        posts_by_session = Post.objects.filter(session=session_key)
         if posts_by_session.count() >= anonymous_draft_limit:
             raise SuspiciousOperation("Sorry, Max limit reached for anonymous session post creation!") 
         # create post with session
-        post = Post(session=request.session.session_key, title="Untitled Post")
+        post = Post(session=session_key, title="Untitled Post")
         
     post.save()
     posts = json.loads(serializers.serialize("json", [post]))
@@ -129,7 +142,8 @@ def publish_draft(request, id):
         raise ObjectDoesNotExist("Please check post id")
 
     post = post.first()
-    if post.author != request.user and post.session != request.session.session_key:
+    session_key = encrypt(settings.SECRET_KEY, request.session.session_key)
+    if post.author != request.user and post.session != session_key:
         raise SuspiciousOperation('Invalid Authorization')
 
     post.is_published = True
@@ -144,7 +158,8 @@ def get_posts_for_username(request, username=None):
     user = request.user
     if username is None:
         # get posts of current user
-        posts = Post.objects.filter(author=user) if user.is_authenticated() else Post.objects.filter(session=request.session.session_key)
+        session_key = encrypt(settings.SECRET_KEY, request.session.session_key)
+        posts = Post.objects.filter(author=user) if user.is_authenticated() else Post.objects.filter(session=session_key)
     else:
         # query by session or user
         if User.objects.filter(username=username).exists():
@@ -188,7 +203,8 @@ def authorize_user(request, username):
         if not request.user.is_authenticated() and request.user.username is not username:
             raise SuspiciousOperation('Invalid Authorization')
     else:
-        if username != request.session.session_key:
+        session_key = encrypt(settings.SECRET_KEY, request.session.session_key)
+        if username != session_key:
             raise SuspiciousOperation('Invalid Authorization')
 
 def get_drafts(request, username=None):
@@ -222,7 +238,8 @@ def get_post(request, username, slug):
     
     # authorize
     post = posts[0]
-    if not post.is_published and post.author != request.user and post.session != request.session.session_key:
+    session_key = encrypt(settings.SECRET_KEY, request.session.session_key)
+    if not post.is_published and post.author != request.user and post.session != session_key:
         # if draft state post: ensure only post.author or post.session can access
         raise SuspiciousOperation('Invalid Authorization')
 
@@ -236,7 +253,8 @@ def update_post(request, username, slug):
     if request.method == 'POST':
         postJSON = json.loads(request.body)
         post = Post.objects.get(slug=slug)
-        if post.author != request.user and post.session != request.session.session_key:
+        session_key = encrypt(settings.SECRET_KEY, request.session.session_key)
+        if post.author != request.user and post.session != session_key:
             raise SuspiciousOperation('Invalid Authorization')
         
         post.title = postJSON["fields"]["title"]
@@ -250,7 +268,8 @@ def update_post(request, username, slug):
 
 def delete_post(request, id):
     post = Post.objects.get(id=id)
-    if post.author != request.user and post.session != request.session.session_key:
+    session_key = encrypt(settings.SECRET_KEY, request.session.session_key)
+    if post.author != request.user and post.session != session_key:
         raise SuspiciousOperation('Invalid Authorization')
         
     post.delete()

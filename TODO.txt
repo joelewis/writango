@@ -1,6 +1,6 @@
 1. [done] Pagination of lists (Posts, Drafts). 
 2. API urls should be proper REST compliant or at the least not as ugly as of now.
-3. Screenshots & Gifs
+3. [done] Screenshots & Gifs
 4. Proper state management library for saner client data management.
 5. [done] Rate throttling and draft limits for unregistered users.
 6. Separate models for Draft & Post. Right now it's just one big table for both drafts and posts. 
