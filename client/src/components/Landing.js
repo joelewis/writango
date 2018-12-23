@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Icon, Row, Col} from "antd";
 import { Link } from "react-router-dom";
+import Model from "../models.js"
 
 class Landing extends Component{
     createDraft() {
@@ -36,7 +37,7 @@ class Landing extends Component{
                     <h3> Write & Publish. No sign-up required. </h3>
                     <p>
                         Use Writango when you want to quickly write something and present it to an audience. You don't even have to sign-up or sign-in.
-                        <Link to="/writes/@joelewis/play/whats-writango-6668324975"> See demo.</Link>
+                        <Link to="/writes/@joelewis/play/whats-writango-1596183143"> See demo.</Link>
                     </p>
                 </div>
                 <div className="landing-block">
