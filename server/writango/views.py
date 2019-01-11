@@ -10,7 +10,7 @@ from django.conf import settings
 from django.forms.models import model_to_dict
 from django.core import serializers
 from django.core.exceptions import SuspiciousOperation, ObjectDoesNotExist
-from models import *
+from writango.models import *
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator
 from django.contrib.auth import authenticate, login, logout
